@@ -1,6 +1,7 @@
 const createError = require("http-errors");
 const express = require("express");
 const logger = require("morgan");
+const cors = require("cors");
 const PORT = process.env.PORT || 8018;
 
 const app = express();
@@ -15,6 +16,8 @@ mongoUtil.connectToMongo((err, connection) => {
     app.use(logger("dev"));
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
+    app.use(cors());
+    app.options("*", cors());
 
     require("./routes/health/index.js")({ app: app });
     require("./routes/login/index.js")({ app: app });
